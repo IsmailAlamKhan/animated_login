@@ -74,18 +74,31 @@ class GlobalTextField extends StatelessWidget {
             color: Colors.blue,
           ),
           accentColor: context.theme.accentColor,
-          inputDecorationTheme: decoration.copyWith(
-            border: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: textFieldColor != null
-                    ? textFieldColor
-                    : brightness == Brightness.light
-                        ? Colors.black
-                        : Colors.white,
-                width: 2,
-              ),
-            ),
-          ),
+          inputDecorationTheme: decoration != null
+              ? decoration.copyWith(
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: textFieldColor != null
+                          ? textFieldColor
+                          : brightness == Brightness.light
+                              ? Colors.black
+                              : Colors.white,
+                      width: 2,
+                    ),
+                  ),
+                )
+              : InputDecorationTheme(
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: textFieldColor != null
+                          ? textFieldColor
+                          : brightness == Brightness.light
+                              ? Colors.black
+                              : Colors.white,
+                      width: 2,
+                    ),
+                  ),
+                ),
         ),
         child: FormBuilderTextField(
           autovalidateMode: autoValidateMode ?? AutovalidateMode.disabled,

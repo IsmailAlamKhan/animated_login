@@ -8,16 +8,17 @@ import '../animatedlogin.dart';
 
 class AuthPage extends GetView<AuthFormController> {
   AuthPage({
-    this.emailBasedLogin = true,
-    this.logo,
-    this.title,
-    this.loginFunction,
-    this.signUpFunction,
-    this.forgotPassFunction,
-    this.afterSubmitAnimationCompletes,
-    this.wantLogo = true,
-    this.wantForgorPass = true,
-    this.wantSignup = true,
+    @required this.logo,
+    @required this.title,
+    @required this.emailBasedLogin,
+    @required this.loginFunction,
+    @required this.signUpFunction,
+    @required this.forgotPassFunction,
+    @required this.afterSubmitAnimationCompletes,
+    @required this.wantLogo,
+    @required this.wantForgorPass,
+    @required this.wantSignup,
+    @required this.decoration,
   });
 
   final String logo;
@@ -30,6 +31,7 @@ class AuthPage extends GetView<AuthFormController> {
   final bool wantLogo;
   final bool wantForgorPass;
   final bool wantSignup;
+  final InputDecorationTheme decoration;
 
   @override
   Widget build(BuildContext context) {
@@ -45,11 +47,15 @@ class AuthPage extends GetView<AuthFormController> {
         controller.signUpButtonTXT('Sign Up');
         controller.title('Login');
         controller.passWordText = 'Password';
-        controller.emailController.reverse();
         controller.forgotPassController.forward();
         controller.forgotPassButtonController.forward();
         controller.nameController.reverse();
-        controller.userNameController.forward();
+        emailBasedLogin
+            ? controller.emailController.forward()
+            : controller.emailController.reverse();
+        emailBasedLogin
+            ? controller.userNameController.reverse()
+            : controller.userNameController.forward();
         controller.regTypeController.reverse();
         controller.conPassController.reverse();
       } else if (controller.authState.value == 1) {
@@ -170,6 +176,7 @@ class AuthPage extends GetView<AuthFormController> {
                             child: SingleChildScrollView(
                               physics: NeverScrollableScrollPhysics(),
                               child: AuthForm(
+                                decoration: decoration,
                                 loginFunction: loginFunction,
                                 signUpFunction: signUpFunction,
                                 forgotPassFunction: forgotPassFunction,

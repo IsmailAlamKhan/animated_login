@@ -11,17 +11,19 @@ class AuthForm extends StatelessWidget {
   AuthForm({
     Key key,
     @required this.controller,
-    this.afterSubmitAnimationCompletes,
-    this.loginFunction,
-    this.signUpFunction,
-    this.forgotPassFunction,
-    this.wantForgorPass = true,
-    this.wantSignup = true,
-    this.emailBasedLogin = true,
+    @required this.decoration,
+    @required this.afterSubmitAnimationCompletes,
+    @required this.emailBasedLogin,
+    @required this.loginFunction,
+    @required this.signUpFunction,
+    @required this.forgotPassFunction,
+    @required this.wantForgorPass,
+    @required this.wantSignup,
   }) : super(key: key);
   final AuthFormController controller;
   final GlobalKey<FormBuilderState> formKey = GlobalKey<FormBuilderState>();
   // final GetStorage box = GetStorage();
+  final InputDecorationTheme decoration;
   final FocusNode nameFocusNode = FocusNode();
   final FocusNode userNameFocusNode = FocusNode();
   final FocusNode emailFocusNode = FocusNode();
@@ -236,10 +238,14 @@ class AuthForm extends StatelessWidget {
                     // *Now Forgot Password
                     controller.authState(0);
                     controller.forgotPassButtonController.forward();
-                    controller.emailController.reverse();
+                    emailBasedLogin
+                        ? controller.emailController.forward()
+                        : controller.emailController.reverse();
+                    emailBasedLogin
+                        ? controller.userNameController.reverse()
+                        : controller.userNameController.forward();
                     controller.nameController.reverse();
                     controller.forgotPassController.forward();
-                    controller.userNameController.forward();
                     //controller.update();
                     controller.regTypeController.reverse();
                     controller.conPassController.reverse();
@@ -390,6 +396,7 @@ class AuthForm extends StatelessWidget {
 
   Widget _buildNameTextField({bool userName = false}) {
     return _TextField(
+      decoration: decoration,
       currentFocus: !userName ? nameFocusNode : userNameFocusNode,
       nextFocus: !userName
           ? emailFocusNode
@@ -404,19 +411,35 @@ class AuthForm extends StatelessWidget {
               return null;
             }
           }
-          if (controller.authState.value == 1 ||
-              controller.authState.value == 0 && userName) {
-            if (val == '') return 'Please enter your "Username".';
-            if (controller.authState.value != 0) {
-              if (val.length < 6) {
-                return 'Username must be six charecters long.';
+          if (!emailBasedLogin) {
+            if (controller.authState.value == 1 ||
+                controller.authState.value == 0 && userName) {
+              if (val == '') return 'Please enter your "Username".';
+              if (controller.authState.value != 0) {
+                if (val.length < 6) {
+                  return 'Username must be six charecters long.';
+                }
+                if (val.length > 15) {
+                  return 'Username must be smaller than 15 charecters.';
+                }
               }
-              if (val.length > 15) {
-                return 'Username must be smaller than 15 charecters.';
-              }
+              return null;
             }
-            return null;
+          } else {
+            if (controller.authState.value == 1 && userName) {
+              if (val == '') return 'Please enter your "Username".';
+              if (controller.authState.value != 0) {
+                if (val.length < 6) {
+                  return 'Username must be six charecters long.';
+                }
+                if (val.length > 15) {
+                  return 'Username must be smaller than 15 charecters.';
+                }
+              }
+              return null;
+            }
           }
+
           return null;
         }
       ]),
@@ -434,21 +457,32 @@ class AuthForm extends StatelessWidget {
   Widget _buildEmailTextField() {
     return Obx(
       () => _TextField(
+        decoration: decoration,
         currentFocus: emailFocusNode,
         nextFocus: passwordFocusNode,
         isEmail: true,
         controller: controller.emailTEC,
         validators: FormBuilderValidators.compose(
-          controller.authState.value == 3 || controller.authState.value == 1
-              ? [
+          !emailBasedLogin
+              ? controller.authState.value == 2 ||
+                      controller.authState.value == 1
+                  ? [
+                      FormBuilderValidators.required(Get.context,
+                          errorText: 'Email is required'),
+                      FormBuilderValidators.email(
+                        Get.context,
+                        errorText: 'Not a valid Email Address',
+                      ),
+                    ]
+                  : []
+              : [
                   FormBuilderValidators.required(Get.context,
                       errorText: 'Email is required'),
                   FormBuilderValidators.email(
                     Get.context,
                     errorText: 'Not a valid Email Address',
                   ),
-                ]
-              : [],
+                ],
         ),
         attribute: "email",
         icon: Icon(
@@ -491,6 +525,7 @@ class AuthForm extends StatelessWidget {
 
     return Obx(
       () => _TextField(
+        decoration: decoration,
         currentFocus: passwordFocusNode,
         nextFocus: conpasswordFocusNode,
         validators: FormBuilderValidators.compose([
@@ -516,6 +551,7 @@ class AuthForm extends StatelessWidget {
   Widget _buildConPassTextField() {
     return Obx(
       () => _TextField(
+        decoration: decoration,
         currentFocus: conpasswordFocusNode,
         nextFocus: regTypeFocusNode,
         validators: FormBuilderValidators.compose(
