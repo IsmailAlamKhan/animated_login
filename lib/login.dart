@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'animatedlogin.dart';
+export 'animatedlogin.dart';
 
 class AnimatedLogin extends StatelessWidget {
   final String logo;
