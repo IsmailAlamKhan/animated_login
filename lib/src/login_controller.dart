@@ -372,7 +372,7 @@ class AuthFormController extends GetxController
           }
           if (authState.value == 2) {
             try {
-              signUpFunction(_signUp);
+              forgotPassFunction(_forgotPass);
               afterAuth(
                 afterAnimationCompletes: afterSubmitAnimationCompletes,
               );
