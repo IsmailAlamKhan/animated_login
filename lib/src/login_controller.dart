@@ -1,3 +1,4 @@
+import 'package:animated_login/animatedlogin.dart';
 import 'package:animated_login/constants.dart';
 import 'package:animated_login/src/login_model.dart';
 import 'package:flutter/material.dart';
@@ -6,8 +7,17 @@ import 'package:get/get.dart';
 
 typedef AuthCallback = Future<String> Function(LoginModel);
 
+class Auth {
+  final AuthCallback loginFunction;
+  final AuthCallback signUpFunction;
+  final AuthCallback forgotPassFunction;
+
+  Auth({this.loginFunction, this.signUpFunction, this.forgotPassFunction});
+}
+
 class AuthFormController extends GetxController
     with SingleGetTickerProviderMixin {
+  final auth = Auth();
   static AuthFormController to = Get.find();
   @override
   void onInit() async {
@@ -292,9 +302,9 @@ class AuthFormController extends GetxController
     String invalidMessege,
     bool emailBasedLogin = true,
     Function afterSubmitAnimationCompletes,
-    Function(LoginModel model) loginFunction,
-    Function(LoginModel model) signUpFunction,
-    Function(LoginModel model) forgotPassFunction,
+    AuthCallback loginFunction,
+    AuthCallback signUpFunction,
+    AuthCallback forgotPassFunction,
   }) async {
     if (!formKey.currentState.saveAndValidate()) {
       if (!Get.isSnackbarOpen)
@@ -347,7 +357,9 @@ class AuthFormController extends GetxController
         error = await forgotPassFunction(_forgotPass);
       }
       if (!error.isNullOrBlank) {
-        afterSubmitAnimationCompletes();
+        afterAuth(
+          afterAnimationCompletes: afterSubmitAnimationCompletes,
+        );
         return false;
       } else {
         errorButton();

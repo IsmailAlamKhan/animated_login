@@ -24,9 +24,9 @@ class AuthPage extends GetView<AuthFormController> {
   final String logo;
   final String title;
   final bool emailBasedLogin;
-  final Function(LoginModel model) loginFunction;
-  final Function(LoginModel model) signUpFunction;
-  final Function(LoginModel model) forgotPassFunction;
+  final AuthCallback loginFunction;
+  final AuthCallback signUpFunction;
+  final AuthCallback forgotPassFunction;
   final Function afterSubmitAnimationCompletes;
   final bool wantLogo;
   final bool wantForgorPass;
