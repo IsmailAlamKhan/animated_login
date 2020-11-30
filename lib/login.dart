@@ -34,12 +34,12 @@ class AnimatedLogin extends StatelessWidget {
           'If you want logo must provide a path to your logo',
         ),
         assert(
-          !wantSignup || signUpFunction == null,
+          wantSignup || signUpFunction == null,
           'If you want Signup must provide a SignupFunction',
         ),
         assert(
-          !wantForgorPass || forgotPassFunction == null,
-          'If you want Signup must provide a SignupFunction',
+          wantForgorPass || forgotPassFunction == null,
+          'If you want Forgot Pass must provide a ForgotPasswordFunction',
         ),
         super(key: key);
 
