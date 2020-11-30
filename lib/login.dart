@@ -21,7 +21,7 @@ class AnimatedLogin extends StatelessWidget {
     @required this.afterSubmitAnimationCompletes,
     this.wantLogo = true,
   })  : assert(
-          wantLogo || logo != null,
+          !wantLogo || logo == null,
           'If you want logo must provide a path to your logo',
         ),
         super(key: key);
