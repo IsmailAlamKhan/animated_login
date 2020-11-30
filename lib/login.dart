@@ -10,11 +10,11 @@ class AnimatedLogin extends StatelessWidget {
 
   const AnimatedLogin({
     Key key,
-    this.logo,
-    this.title,
-    this.loginFunction,
-    this.signUpFunction,
-    this.forgotPassFunction,
+    @required this.logo,
+    @required this.title,
+    @required this.loginFunction,
+    @required this.signUpFunction,
+    @required this.forgotPassFunction,
   }) : super(key: key);
 
   @override
