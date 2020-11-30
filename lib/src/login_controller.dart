@@ -356,7 +356,7 @@ class AuthFormController extends GetxController
       if (authState.value == 2) {
         error = await forgotPassFunction(_forgotPass);
       }
-      if (error.isNullOrBlank) {
+      if (error != null && error != '') {
         errorButton();
         showErrorSnackBar(body: error);
         return false;
