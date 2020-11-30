@@ -13,6 +13,8 @@ class AuthPage extends GetView<AuthFormController> {
     this.forgotPassFunction,
     this.afterSubmitAnimationCompletes,
     this.wantLogo = true,
+    this.wantForgorPass = true,
+    this.wantSignup = true,
   });
 
   final String logo;
@@ -22,6 +24,8 @@ class AuthPage extends GetView<AuthFormController> {
   final Function forgotPassFunction;
   final Function afterSubmitAnimationCompletes;
   final bool wantLogo;
+  final bool wantForgorPass;
+  final bool wantSignup;
 
   @override
   Widget build(BuildContext context) {
@@ -168,6 +172,8 @@ class AuthPage extends GetView<AuthFormController> {
                                 afterSubmitAnimationCompletes:
                                     afterSubmitAnimationCompletes,
                                 controller: controller,
+                                wantForgorPass: wantForgorPass,
+                                wantSignup: wantSignup,
                               ),
                             ),
                           ),

@@ -10,6 +10,8 @@ class AnimatedLogin extends StatelessWidget {
   final Function forgotPassFunction;
   final Function afterSubmitAnimationCompletes;
   final bool wantLogo;
+  final bool wantForgorPass;
+  final bool wantSignup;
 
   const AnimatedLogin({
     Key key,
@@ -17,9 +19,11 @@ class AnimatedLogin extends StatelessWidget {
     @required this.title,
     @required this.loginFunction,
     @required this.signUpFunction,
-    @required this.forgotPassFunction,
+    this.forgotPassFunction,
     @required this.afterSubmitAnimationCompletes,
     this.wantLogo = true,
+    this.wantForgorPass = true,
+    this.wantSignup = true,
   })  : assert(
           !wantLogo || logo == null,
           'If you want logo must provide a path to your logo',
@@ -31,6 +35,8 @@ class AnimatedLogin extends StatelessWidget {
     return AuthPage(
       forgotPassFunction: forgotPassFunction,
       loginFunction: loginFunction,
+      wantForgorPass: wantForgorPass,
+      wantSignup: wantSignup,
       logo: logo,
       signUpFunction: signUpFunction,
       afterSubmitAnimationCompletes: afterSubmitAnimationCompletes,

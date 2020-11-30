@@ -11,7 +11,8 @@ class GlobalTextField extends StatelessWidget {
 
   final Color fillColor, textFieldColor;
   final bool isDense, autoFocus, isPassWord, obscure;
-  final List<String Function(dynamic)> validators;
+  final FormFieldValidator<String> validators;
+
   final TextEditingController tec;
   final FocusNode focusNode;
   final List<TextInputFormatter> inputFormatters;
@@ -132,7 +133,7 @@ class GlobalTextField extends StatelessWidget {
           obscureText: isPassWord ? obscure : false,
           onChanged: changed,
           onSubmitted: submit,
-          validator: FormBuilderValidators.compose(validators),
+          validator: validators,
           style: TextStyle(
               color: textFieldColor != null
                   ? textFieldColor

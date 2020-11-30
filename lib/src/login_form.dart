@@ -13,6 +13,8 @@ class AuthForm extends StatelessWidget {
     this.loginFunction,
     this.signUpFunction,
     this.forgotPassFunction,
+    this.wantForgorPass = true,
+    this.wantSignup = true,
   }) : super(key: key);
   final AuthFormController controller;
   final GlobalKey<FormBuilderState> formKey = GlobalKey<FormBuilderState>();
@@ -27,6 +29,8 @@ class AuthForm extends StatelessWidget {
   final Function loginFunction;
   final Function signUpFunction;
   final Function forgotPassFunction;
+  final bool wantForgorPass;
+  final bool wantSignup;
 
   final passwordFocusNode = AuthFormController.to.passWordFocusNode;
   @override
@@ -60,9 +64,13 @@ class AuthForm extends StatelessWidget {
           _buildEmail(),
           _buildPassword(context),
           _buildConPass(),
-          _buildForgotPassButton(),
+          wantForgorPass ? _buildForgotPassButton() : SizedBox.shrink(),
           _buildSubmitButton(context),
-          controller.authState.value != 3 ? _buildSignUpButton() : SizedBox(),
+          wantSignup
+              ? controller.authState.value != 3
+                  ? _buildSignUpButton()
+                  : SizedBox.shrink()
+              : SizedBox.shrink(),
         ],
       ),
     );
@@ -383,7 +391,7 @@ class AuthForm extends StatelessWidget {
           : controller.authState.value == 1
               ? nameFocusNode
               : passwordFocusNode,
-      validators: [
+      validators: FormBuilderValidators.compose([
         (val) {
           if (!userName) {
             if (controller.authState.value == 1) {
@@ -406,7 +414,7 @@ class AuthForm extends StatelessWidget {
           }
           return null;
         }
-      ],
+      ]),
       // validators: [],
       attribute: !userName ? "fullName" : "userName",
       icon: Icon(
@@ -433,17 +441,18 @@ class AuthForm extends StatelessWidget {
             : null,
         isEmail: true,
         controller: controller.emailTEC,
-        validators:
-            controller.authState.value == 3 || controller.authState.value == 1
-                ? [
-                    FormBuilderValidators.required(Get.context,
-                        errorText: 'Email is required'),
-                    FormBuilderValidators.email(
-                      Get.context,
-                      errorText: 'Not a valid Email Address',
-                    ),
-                  ]
-                : [],
+        validators: FormBuilderValidators.compose(
+          controller.authState.value == 3 || controller.authState.value == 1
+              ? [
+                  FormBuilderValidators.required(Get.context,
+                      errorText: 'Email is required'),
+                  FormBuilderValidators.email(
+                    Get.context,
+                    errorText: 'Not a valid Email Address',
+                  ),
+                ]
+              : [],
+        ),
         attribute: "email",
         icon: Icon(
           Icons.email,
@@ -495,7 +504,7 @@ class AuthForm extends StatelessWidget {
                 );
               }
             : null,
-        validators: [
+        validators: FormBuilderValidators.compose([
           (val) {
             if (controller.authState.value != 2 &&
                 controller.authState.value <= 3) {
@@ -504,7 +513,7 @@ class AuthForm extends StatelessWidget {
               return null;
             }
           }
-        ],
+        ]),
         attribute: "password",
         isPassword: true,
         obsecure: controller.obsecure.value,
@@ -520,17 +529,18 @@ class AuthForm extends StatelessWidget {
       () => _TextField(
         currentFocus: conpasswordFocusNode,
         nextFocus: regTypeFocusNode,
-        validators: controller.authState.value == 1 ||
-                controller.authState.value == 3
-            ? [
-                FormBuilderValidators.required(
-                  Get.context,
-                  errorText: 'Please confirm your Password',
-                ),
-                FormBuilderValidators.equal(
-                    Get.context, formKey.currentState.fields['password'].value),
-              ]
-            : [],
+        validators: FormBuilderValidators.compose(
+          controller.authState.value == 1 || controller.authState.value == 3
+              ? [
+                  FormBuilderValidators.required(
+                    Get.context,
+                    errorText: 'Please confirm your Password',
+                  ),
+                  FormBuilderValidators.equal(Get.context,
+                      formKey.currentState.fields['password'].value),
+                ]
+              : [],
+        ),
         attribute: "con_password",
         isPassword: true,
         obsecure: controller.conobsecure.value,
@@ -567,7 +577,8 @@ class _TextField extends StatelessWidget {
   final bool isPassword, obsecure, isEmail;
   final Widget icon;
 
-  final List<FormFieldValidator> validators;
+  final FormFieldValidator<String> validators;
+
   final Function onChanged, hidePass, showPass;
 
   final FocusNode currentFocus, nextFocus;
