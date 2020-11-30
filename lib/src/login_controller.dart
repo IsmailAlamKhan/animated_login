@@ -280,7 +280,7 @@ class AuthFormController extends GetxController
   void afterAuth({Function afterAnimationCompletes}) {
     successButton(() async {
       await Future.delayed(700.milliseconds);
-      if (afterAnimationCompletes != null) afterAnimationCompletes();
+      // if (afterAnimationCompletes != null) afterAnimationCompletes();
     });
   }
 
@@ -339,18 +339,12 @@ class AuthFormController extends GetxController
               afterAuth(
                 afterAnimationCompletes: afterSubmitAnimationCompletes,
               );
+
               return;
             } catch (e) {
               showErrorSnackBar(body: e.toString());
               return;
             }
-
-            /*
-            login(
-              afterAnimationCompletes: afterSubmitAnimationCompletes,
-              auth: loginFunction(_login),
-            );
-            */
           }
           if (authState.value == 1) {
             try {
@@ -358,17 +352,12 @@ class AuthFormController extends GetxController
               afterAuth(
                 afterAnimationCompletes: afterSubmitAnimationCompletes,
               );
+
               return;
             } catch (e) {
               showErrorSnackBar(body: e.toString());
               return;
             }
-            /*
-            signUp(
-              auth: signUpFunction(_signUp),
-              afterAnimationCompletes: afterSubmitAnimationCompletes,
-            );
-            */
           }
           if (authState.value == 2) {
             try {
@@ -376,17 +365,12 @@ class AuthFormController extends GetxController
               afterAuth(
                 afterAnimationCompletes: afterSubmitAnimationCompletes,
               );
+
               return;
             } catch (e) {
               showErrorSnackBar(body: e.toString());
               return;
             }
-            /*
-            forgotPass(
-              auth: forgotPassFunction(_forgotPass),
-            );
-            return;
-            */
           }
         },
       );
