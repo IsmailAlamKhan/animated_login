@@ -277,7 +277,6 @@ class AuthFormController extends GetxController
   }
 
   void afterAuth({Function afterAnimationCompletes}) {
-    showSuccessSnackBar(body: 'An email has been sent to your account');
     successButton(() async {
       await Future.delayed(700.milliseconds);
       if (afterAnimationCompletes != null) afterAnimationCompletes();

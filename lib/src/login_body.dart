@@ -11,6 +11,7 @@ class AuthPage extends GetView<AuthFormController> {
     this.loginFunction,
     this.signUpFunction,
     this.forgotPassFunction,
+    this.afterSubmitAnimationCompletes,
   });
 
   final String logo;
@@ -18,6 +19,7 @@ class AuthPage extends GetView<AuthFormController> {
   final Function loginFunction;
   final Function signUpFunction;
   final Function forgotPassFunction;
+  final Function afterSubmitAnimationCompletes;
 
   @override
   Widget build(BuildContext context) {
@@ -87,12 +89,6 @@ class AuthPage extends GetView<AuthFormController> {
       backgroundColor: Theme.of(Get.context).primaryColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        leading: BackButton(
-          onPressed: () async {
-            await controller.reset();
-            return Get.toNamed('/');
-          },
-        ),
         iconTheme: IconThemeData(
           color: Colors.white,
         ),
@@ -163,6 +159,8 @@ class AuthPage extends GetView<AuthFormController> {
                                 loginFunction: loginFunction,
                                 signUpFunction: signUpFunction,
                                 forgotPassFunction: forgotPassFunction,
+                                afterSubmitAnimationCompletes:
+                                    afterSubmitAnimationCompletes,
                                 controller: controller,
                               ),
                             ),

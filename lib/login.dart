@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'src/login.dart';
 
 class AnimatedLogin extends StatelessWidget {
@@ -7,6 +8,7 @@ class AnimatedLogin extends StatelessWidget {
   final Function loginFunction;
   final Function signUpFunction;
   final Function forgotPassFunction;
+  final Function afterSubmitAnimationCompletes;
 
   const AnimatedLogin({
     Key key,
@@ -15,6 +17,7 @@ class AnimatedLogin extends StatelessWidget {
     @required this.loginFunction,
     @required this.signUpFunction,
     @required this.forgotPassFunction,
+    @required this.afterSubmitAnimationCompletes,
   }) : super(key: key);
 
   @override
@@ -24,6 +27,7 @@ class AnimatedLogin extends StatelessWidget {
       loginFunction: loginFunction,
       logo: logo,
       signUpFunction: signUpFunction,
+      afterSubmitAnimationCompletes: afterSubmitAnimationCompletes,
       title: title,
     );
   }
