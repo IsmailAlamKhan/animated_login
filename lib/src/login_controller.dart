@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:get/get.dart';
 
+typedef AuthCallback = Future<String> Function(LoginModel);
+
 class AuthFormController extends GetxController
     with SingleGetTickerProviderMixin {
   static AuthFormController to = Get.find();
@@ -330,47 +332,24 @@ class AuthFormController extends GetxController
         submitBTNwidth.value - ((submitBTNwidth.value - 40.0) * 1),
       );
       loadingState(1);
+      String error;
       Future.delayed(
         1000.milliseconds,
         () async {
           if (authState.value == 0) {
-            try {
-              await loginFunction(_login);
-              afterAuth(
-                afterAnimationCompletes: afterSubmitAnimationCompletes,
-              );
-
-              return;
-            } catch (e) {
-              showErrorSnackBar(body: e.toString());
-              return;
-            }
+            error = await loginFunction(_login);
           }
           if (authState.value == 1) {
-            try {
-              await signUpFunction(_signUp);
-              afterAuth(
-                afterAnimationCompletes: afterSubmitAnimationCompletes,
-              );
-
-              return;
-            } catch (e) {
-              showErrorSnackBar(body: e.toString());
-              return;
-            }
+            error = await signUpFunction(_signUp);
           }
           if (authState.value == 2) {
-            try {
-              await forgotPassFunction(_forgotPass);
-              afterAuth(
-                afterAnimationCompletes: afterSubmitAnimationCompletes,
-              );
-
-              return;
-            } catch (e) {
-              showErrorSnackBar(body: e.toString());
-              return;
-            }
+            error = await forgotPassFunction(_forgotPass);
+          }
+          if (!error.isNullOrBlank) {
+            afterSubmitAnimationCompletes();
+          } else {
+            errorButton();
+            showErrorSnackBar(body: error);
           }
         },
       );
