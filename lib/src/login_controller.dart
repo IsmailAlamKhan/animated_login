@@ -335,7 +335,7 @@ class AuthFormController extends GetxController
         () async {
           if (authState.value == 0) {
             try {
-              loginFunction(_login);
+              await loginFunction(_login);
               afterAuth(
                 afterAnimationCompletes: afterSubmitAnimationCompletes,
               );
@@ -354,7 +354,7 @@ class AuthFormController extends GetxController
           }
           if (authState.value == 1) {
             try {
-              signUpFunction(_signUp);
+              await signUpFunction(_signUp);
               afterAuth(
                 afterAnimationCompletes: afterSubmitAnimationCompletes,
               );
@@ -372,7 +372,7 @@ class AuthFormController extends GetxController
           }
           if (authState.value == 2) {
             try {
-              forgotPassFunction(_forgotPass);
+              await forgotPassFunction(_forgotPass);
               afterAuth(
                 afterAnimationCompletes: afterSubmitAnimationCompletes,
               );
