@@ -38,18 +38,21 @@ class AuthForm extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Obx(
-              () => AnimatedSwitcher(
-                duration: controller.animDuration,
-                child: Text(
-                  controller.title.value,
-                  key: ValueKey(controller.title.value),
-                  style: TextStyle(
-                    color: context.theme.accentColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
+              () {
+                print('authState = ${controller.authState}');
+                return AnimatedSwitcher(
+                  duration: controller.animDuration,
+                  child: Text(
+                    controller.title.value,
+                    key: ValueKey(controller.title.value),
+                    style: TextStyle(
+                      color: context.theme.accentColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
                   ),
-                ),
-              ),
+                );
+              },
             ),
           ),
           _buildUserName(),
