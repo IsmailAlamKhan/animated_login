@@ -9,16 +9,22 @@ class AnimatedLogin extends StatelessWidget {
   final Function signUpFunction;
   final Function forgotPassFunction;
   final Function afterSubmitAnimationCompletes;
+  final bool wantLogo;
 
   const AnimatedLogin({
     Key key,
-    @required this.logo,
+    this.logo,
     @required this.title,
     @required this.loginFunction,
     @required this.signUpFunction,
     @required this.forgotPassFunction,
     @required this.afterSubmitAnimationCompletes,
-  }) : super(key: key);
+    this.wantLogo = true,
+  })  : assert(
+          wantLogo || logo != null,
+          'If you want logo must provide a path to your logo',
+        ),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +34,7 @@ class AnimatedLogin extends StatelessWidget {
       logo: logo,
       signUpFunction: signUpFunction,
       afterSubmitAnimationCompletes: afterSubmitAnimationCompletes,
+      wantLogo: wantLogo,
       title: title,
     );
   }

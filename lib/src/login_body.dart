@@ -12,6 +12,7 @@ class AuthPage extends GetView<AuthFormController> {
     this.signUpFunction,
     this.forgotPassFunction,
     this.afterSubmitAnimationCompletes,
+    this.wantLogo = true,
   });
 
   final String logo;
@@ -20,6 +21,7 @@ class AuthPage extends GetView<AuthFormController> {
   final Function signUpFunction;
   final Function forgotPassFunction;
   final Function afterSubmitAnimationCompletes;
+  final bool wantLogo;
 
   @override
   Widget build(BuildContext context) {
@@ -108,14 +110,18 @@ class AuthPage extends GetView<AuthFormController> {
                     offset: Offset(0.0, yOffset),
                     child: Column(
                       children: [
-                        Image.asset(
-                          logo,
-                          height: 100,
-                          width: 200,
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
+                        wantLogo
+                            ? Padding(
+                                padding: const EdgeInsets.only(
+                                  bottom: 20,
+                                ),
+                                child: Image.asset(
+                                  logo,
+                                  height: 100,
+                                  width: 200,
+                                ),
+                              )
+                            : SizedBox.shrink(),
                         Text(
                           title,
                           textAlign: TextAlign.center,
