@@ -286,7 +286,7 @@ class AuthFormController extends GetxController
     });
   }
 
-  void submit({
+  Future<bool> submit({
     GlobalKey<FormBuilderState> formKey,
     BuildContext context,
     String invalidMessege,
@@ -295,12 +295,13 @@ class AuthFormController extends GetxController
     Function(LoginModel model) loginFunction,
     Function(LoginModel model) signUpFunction,
     Function(LoginModel model) forgotPassFunction,
-  }) {
+  }) async {
     if (!formKey.currentState.saveAndValidate()) {
       if (!Get.isSnackbarOpen)
         showErrorSnackBar(
           body: invalidMessege ?? 'Please fill all the mandatory fields',
         );
+      return false;
     } else {
       final String password = formKey.currentState.fields['password'].value;
       final String email = formKey.currentState.fields['email'].value;
@@ -333,26 +334,26 @@ class AuthFormController extends GetxController
       );
       loadingState(1);
       String error;
-      Future.delayed(
+      await Future.delayed(
         1000.milliseconds,
-        () async {
-          if (authState.value == 0) {
-            error = await loginFunction(_login);
-          }
-          if (authState.value == 1) {
-            error = await signUpFunction(_signUp);
-          }
-          if (authState.value == 2) {
-            error = await forgotPassFunction(_forgotPass);
-          }
-          if (!error.isNullOrBlank) {
-            afterSubmitAnimationCompletes();
-          } else {
-            errorButton();
-            showErrorSnackBar(body: error);
-          }
-        },
       );
+      if (authState.value == 0) {
+        error = await loginFunction(_login);
+      }
+      if (authState.value == 1) {
+        error = await signUpFunction(_signUp);
+      }
+      if (authState.value == 2) {
+        error = await forgotPassFunction(_forgotPass);
+      }
+      if (!error.isNullOrBlank) {
+        afterSubmitAnimationCompletes();
+        return false;
+      } else {
+        errorButton();
+        showErrorSnackBar(body: error);
+        return true;
+      }
     }
   }
 
