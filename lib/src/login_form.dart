@@ -421,7 +421,7 @@ class AuthForm extends StatelessWidget {
         currentFocus: emailFocusNode,
         nextFocus: passwordFocusNode,
         onFieldSubmitted: controller.authState.value == 2
-            ? (_) {
+            ? (value) {
                 controller.submit(
                   context: Get.context,
                   formKey: formKey,
