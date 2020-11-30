@@ -456,42 +456,45 @@ class AuthForm extends StatelessWidget {
 
   Widget _buildEmailTextField() {
     return Obx(
-      () => _TextField(
-        decoration: decoration,
-        currentFocus: emailFocusNode,
-        nextFocus: passwordFocusNode,
-        isEmail: true,
-        controller: controller.emailTEC,
-        validators: FormBuilderValidators.compose(
-          !emailBasedLogin
-              ? controller.authState.value == 2 ||
-                      controller.authState.value == 1
-                  ? [
-                      FormBuilderValidators.required(Get.context,
-                          errorText: 'Email is required'),
-                      FormBuilderValidators.email(
-                        Get.context,
-                        errorText: 'Not a valid Email Address',
-                      ),
-                    ]
-                  : []
-              : [
-                  FormBuilderValidators.required(Get.context,
-                      errorText: 'Email is required'),
-                  FormBuilderValidators.email(
-                    Get.context,
-                    errorText: 'Not a valid Email Address',
-                  ),
-                ],
-        ),
-        attribute: "email",
-        icon: Icon(
-          Icons.email,
-          size: 30,
-        ),
-        isPassword: false,
-        label: "Email",
-      ),
+      () {
+        controller.authState.value;
+        return _TextField(
+          decoration: decoration,
+          currentFocus: emailFocusNode,
+          nextFocus: passwordFocusNode,
+          isEmail: true,
+          controller: controller.emailTEC,
+          validators: FormBuilderValidators.compose(
+            !emailBasedLogin
+                ? controller.authState.value == 2 ||
+                        controller.authState.value == 1
+                    ? [
+                        FormBuilderValidators.required(Get.context,
+                            errorText: 'Email is required'),
+                        FormBuilderValidators.email(
+                          Get.context,
+                          errorText: 'Not a valid Email Address',
+                        ),
+                      ]
+                    : []
+                : [
+                    FormBuilderValidators.required(Get.context,
+                        errorText: 'Email is required'),
+                    FormBuilderValidators.email(
+                      Get.context,
+                      errorText: 'Not a valid Email Address',
+                    ),
+                  ],
+          ),
+          attribute: "email",
+          icon: Icon(
+            Icons.email,
+            size: 30,
+          ),
+          isPassword: false,
+          label: "Email",
+        );
+      },
     );
   }
 

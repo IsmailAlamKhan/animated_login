@@ -318,7 +318,7 @@ class AuthFormController extends GetxController
       final String fullName = formKey.currentState.fields['fullName'].value;
       final String userName = formKey.currentState.fields['userName'].value;
       LoginModel _login;
-      if (emailBasedLogin)
+      if (!emailBasedLogin)
         _login = LoginModel(
           password: password,
           username: userName,
