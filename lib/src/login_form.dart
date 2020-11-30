@@ -568,7 +568,7 @@ class _TextField extends StatelessWidget {
   final Function onChanged, hidePass, showPass;
 
   final FocusNode currentFocus, nextFocus;
-  final ValueChanged<String> onFieldSubmitted;
+  final Function(String) onFieldSubmitted;
 
   _fieldFocusChange({
     @required BuildContext context,
