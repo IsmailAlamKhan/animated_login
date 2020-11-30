@@ -1,4 +1,5 @@
 import 'package:animated_login/constants.dart';
+import 'package:animated_login/src/login_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:get/get.dart';
@@ -228,52 +229,52 @@ class AuthFormController extends GetxController
 
 //*Submit Stuff
   void signUp({
-    String userName,
-    String password,
-    String fullname,
-    String email,
     Function afterAnimationCompletes,
     Function auth,
   }) async {
     try {
       auth();
+      afterAuth(
+        afterAnimationCompletes: afterAnimationCompletes,
+      );
     } catch (e) {
       showErrorSnackBar(body: e.toString());
     }
-
-    afterAuth(
-      afterAnimationCompletes: afterAnimationCompletes,
-    );
   }
 
   void login({
-    String userName,
-    String password,
     Function afterAnimationCompletes,
     Function auth,
   }) async {
     try {
       auth();
+      afterAuth(
+        afterAnimationCompletes: afterAnimationCompletes,
+      );
     } catch (e) {
       showErrorSnackBar(body: e.toString());
     }
-
-    afterAuth(
-      afterAnimationCompletes: afterAnimationCompletes,
-    );
   }
 
   void forgotPass({
-    String email,
     Function afterAnimationCompletes,
     Function auth,
   }) async {
     try {
       auth();
+      authState(0);
+      forgotPassButtonController.forward();
+      emailController.reverse();
+      nameController.reverse();
+      forgotPassController.forward();
+      userNameController.forward();
+      conPassController.reverse();
+      submitBTNText('Login');
+      signUpButtonTXT('Sign Up');
+      title('Login');
     } catch (e) {
       showErrorSnackBar(body: e.toString());
     }
-    afterAuth();
   }
 
   void afterAuth({Function afterAnimationCompletes}) {
@@ -287,10 +288,11 @@ class AuthFormController extends GetxController
     GlobalKey<FormBuilderState> formKey,
     BuildContext context,
     String invalidMessege,
+    bool emailBasedLogin = true,
     Function afterSubmitAnimationCompletes,
-    Function loginFunction,
-    Function signUpFunction,
-    Function forgotPassFunction,
+    Function(LoginModel model) loginFunction,
+    Function(LoginModel model) signUpFunction,
+    Function(LoginModel model) forgotPassFunction,
   }) {
     if (!formKey.currentState.saveAndValidate()) {
       if (!Get.isSnackbarOpen)
@@ -302,6 +304,28 @@ class AuthFormController extends GetxController
       final String email = formKey.currentState.fields['email'].value;
       final String fullName = formKey.currentState.fields['fullName'].value;
       final String userName = formKey.currentState.fields['userName'].value;
+      LoginModel _login;
+      if (emailBasedLogin)
+        _login = LoginModel(
+          password: password,
+          username: userName,
+        );
+      else
+        _login = LoginModel(
+          password: password,
+          email: email,
+        );
+
+      final _signUp = LoginModel(
+        email: email,
+        fullname: fullName,
+        password: password,
+        username: userName,
+      );
+
+      final _forgotPass = LoginModel(
+        email: email,
+      );
       submitBTNwidth(
         submitBTNwidth.value - ((submitBTNwidth.value - 40.0) * 1),
       );
@@ -311,28 +335,21 @@ class AuthFormController extends GetxController
         () async {
           if (authState.value == 0) {
             login(
-              userName: userName,
-              password: password,
               afterAnimationCompletes: afterSubmitAnimationCompletes,
-              auth: loginFunction,
+              auth: loginFunction(_login),
             );
             return;
           }
           if (authState.value == 1) {
             signUp(
-              email: email,
-              fullname: fullName,
-              password: password,
-              userName: userName,
-              auth: signUpFunction,
+              auth: signUpFunction(_signUp),
               afterAnimationCompletes: afterSubmitAnimationCompletes,
             );
             return;
           }
           if (authState.value == 2) {
             forgotPass(
-              email: email,
-              auth: forgotPassFunction,
+              auth: forgotPassFunction(_forgotPass),
             );
             return;
           }

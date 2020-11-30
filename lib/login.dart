@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
-import 'src/login.dart';
+import 'animatedlogin.dart';
 
 class AnimatedLogin extends StatelessWidget {
   final String logo;
   final String title;
-  final Function loginFunction;
-  final Function signUpFunction;
-  final Function forgotPassFunction;
+  final bool emailBasedLogin;
+  final Function(LoginModel model) loginFunction;
+  final Function(LoginModel model) signUpFunction;
+  final Function(LoginModel model) forgotPassFunction;
   final Function afterSubmitAnimationCompletes;
   final bool wantLogo;
   final bool wantForgorPass;
@@ -24,6 +25,7 @@ class AnimatedLogin extends StatelessWidget {
     this.wantLogo = true,
     this.wantForgorPass = true,
     this.wantSignup = true,
+    this.emailBasedLogin = true,
   })  : assert(
           !wantLogo || logo == null,
           'If you want logo must provide a path to your logo',
@@ -39,6 +41,7 @@ class AnimatedLogin extends StatelessWidget {
       wantSignup: wantSignup,
       logo: logo,
       signUpFunction: signUpFunction,
+      emailBasedLogin: emailBasedLogin,
       afterSubmitAnimationCompletes: afterSubmitAnimationCompletes,
       wantLogo: wantLogo,
       title: title,

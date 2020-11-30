@@ -22,7 +22,7 @@ void showErrorSnackBar({
         ),
       ),
       isDismissible: true,
-      maxWidth: context.width <= 800 ? context.width : context.width / 2.5,
+      maxWidth: context.width,
       forwardAnimationCurve: Curves.easeInOut,
       barBlur: 20,
       margin: EdgeInsets.only(
@@ -53,7 +53,7 @@ void showSuccessSnackBar({
         ),
       ),
       isDismissible: true,
-      maxWidth: context.width <= 800 ? context.width : context.width / 2.5,
+      maxWidth: context.width,
       forwardAnimationCurve: Curves.easeInOut,
       barBlur: 20,
       margin: EdgeInsets.only(

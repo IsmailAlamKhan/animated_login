@@ -22,6 +22,7 @@ class GlobalTextField extends StatelessWidget {
   final Function showPass, hidePass;
   final Function(String) submit;
   final AutovalidateMode autoValidateMode;
+  final InputDecorationTheme decoration;
 
   const GlobalTextField({
     Key key,
@@ -50,6 +51,7 @@ class GlobalTextField extends StatelessWidget {
     this.brightness = Brightness.light,
     this.textFieldColor,
     this.autoValidateMode,
+    this.decoration,
   }) : super(key: key);
 
   @override
@@ -72,16 +74,7 @@ class GlobalTextField extends StatelessWidget {
             color: Colors.blue,
           ),
           accentColor: context.theme.accentColor,
-          inputDecorationTheme: InputDecorationTheme(
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: textFieldColor != null
-                    ? textFieldColor
-                    : brightness == Brightness.light
-                        ? Colors.black
-                        : Colors.white,
-              ),
-            ),
+          inputDecorationTheme: decoration.copyWith(
             border: OutlineInputBorder(
               borderSide: BorderSide(
                 color: textFieldColor != null

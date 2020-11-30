@@ -4,8 +4,11 @@ import 'package:get/get.dart';
 import 'package:animated_login/src/login_controller.dart';
 import 'package:animated_login/src/login_form.dart';
 
+import '../animatedlogin.dart';
+
 class AuthPage extends GetView<AuthFormController> {
   AuthPage({
+    this.emailBasedLogin = true,
     this.logo,
     this.title,
     this.loginFunction,
@@ -19,9 +22,10 @@ class AuthPage extends GetView<AuthFormController> {
 
   final String logo;
   final String title;
-  final Function loginFunction;
-  final Function signUpFunction;
-  final Function forgotPassFunction;
+  final bool emailBasedLogin;
+  final Function(LoginModel model) loginFunction;
+  final Function(LoginModel model) signUpFunction;
+  final Function(LoginModel model) forgotPassFunction;
   final Function afterSubmitAnimationCompletes;
   final bool wantLogo;
   final bool wantForgorPass;
@@ -171,6 +175,7 @@ class AuthPage extends GetView<AuthFormController> {
                                 forgotPassFunction: forgotPassFunction,
                                 afterSubmitAnimationCompletes:
                                     afterSubmitAnimationCompletes,
+                                emailBasedLogin: emailBasedLogin,
                                 controller: controller,
                                 wantForgorPass: wantForgorPass,
                                 wantSignup: wantSignup,

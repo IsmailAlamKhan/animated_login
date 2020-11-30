@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:animated_login/src/login_controller.dart';
 import 'package:animated_login/text_field.dart';
 
+import '../animatedlogin.dart';
+
 class AuthForm extends StatelessWidget {
   AuthForm({
     Key key,
@@ -15,6 +17,7 @@ class AuthForm extends StatelessWidget {
     this.forgotPassFunction,
     this.wantForgorPass = true,
     this.wantSignup = true,
+    this.emailBasedLogin = true,
   }) : super(key: key);
   final AuthFormController controller;
   final GlobalKey<FormBuilderState> formKey = GlobalKey<FormBuilderState>();
@@ -26,9 +29,10 @@ class AuthForm extends StatelessWidget {
   final FocusNode conpasswordFocusNode = FocusNode();
   final FocusNode regTypeFocusNode = FocusNode();
   final Function afterSubmitAnimationCompletes;
-  final Function loginFunction;
-  final Function signUpFunction;
-  final Function forgotPassFunction;
+  final bool emailBasedLogin;
+  final Function(LoginModel model) loginFunction;
+  final Function(LoginModel model) signUpFunction;
+  final Function(LoginModel model) forgotPassFunction;
   final bool wantForgorPass;
   final bool wantSignup;
 
@@ -313,6 +317,7 @@ class AuthForm extends StatelessWidget {
                     ),
                     onPressed: () {
                       controller.submit(
+                        emailBasedLogin: emailBasedLogin,
                         loginFunction: loginFunction,
                         signUpFunction: signUpFunction,
                         forgotPassFunction: forgotPassFunction,
@@ -431,14 +436,6 @@ class AuthForm extends StatelessWidget {
       () => _TextField(
         currentFocus: emailFocusNode,
         nextFocus: passwordFocusNode,
-        onFieldSubmitted: controller.authState.value == 2
-            ? (value) {
-                controller.submit(
-                  context: Get.context,
-                  formKey: formKey,
-                );
-              }
-            : null,
         isEmail: true,
         controller: controller.emailTEC,
         validators: FormBuilderValidators.compose(
@@ -496,14 +493,6 @@ class AuthForm extends StatelessWidget {
       () => _TextField(
         currentFocus: passwordFocusNode,
         nextFocus: conpasswordFocusNode,
-        onFieldSubmitted: controller.authState.value == 0
-            ? (value) {
-                controller.submit(
-                  context: context,
-                  formKey: formKey,
-                );
-              }
-            : null,
         validators: FormBuilderValidators.compose([
           (val) {
             if (controller.authState.value != 2 &&
@@ -570,6 +559,7 @@ class _TextField extends StatelessWidget {
     this.onFieldSubmitted,
     this.controller,
     this.isEmail = false,
+    this.decoration,
   }) : super(key: key);
 
   final String attribute, label, initialValue;
@@ -583,6 +573,7 @@ class _TextField extends StatelessWidget {
 
   final FocusNode currentFocus, nextFocus;
   final Function(String) onFieldSubmitted;
+  final InputDecorationTheme decoration;
 
   _fieldFocusChange({
     @required BuildContext context,
@@ -620,9 +611,11 @@ class _TextField extends StatelessWidget {
         hidePass: hidePass,
         label: label,
         obscure: obsecure,
+        decoration: decoration,
       );
     else
       return GlobalTextField(
+        decoration: decoration,
         autoValidateMode: AutovalidateMode.onUserInteraction,
         // textFieldColor: Colors.black,
         brightness: Brightness.light,
