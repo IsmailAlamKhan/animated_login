@@ -334,24 +334,59 @@ class AuthFormController extends GetxController
         1000.milliseconds,
         () async {
           if (authState.value == 0) {
+            try {
+              loginFunction(_login);
+              afterAuth(
+                afterAnimationCompletes: afterSubmitAnimationCompletes,
+              );
+              return;
+            } catch (e) {
+              showErrorSnackBar(body: e.toString());
+              return;
+            }
+
+            /*
             login(
               afterAnimationCompletes: afterSubmitAnimationCompletes,
               auth: loginFunction(_login),
             );
-            return;
+            */
           }
           if (authState.value == 1) {
+            try {
+              signUpFunction(_signUp);
+              afterAuth(
+                afterAnimationCompletes: afterSubmitAnimationCompletes,
+              );
+              return;
+            } catch (e) {
+              showErrorSnackBar(body: e.toString());
+              return;
+            }
+            /*
             signUp(
               auth: signUpFunction(_signUp),
               afterAnimationCompletes: afterSubmitAnimationCompletes,
             );
-            return;
+            */
           }
           if (authState.value == 2) {
+            try {
+              signUpFunction(_signUp);
+              afterAuth(
+                afterAnimationCompletes: afterSubmitAnimationCompletes,
+              );
+              return;
+            } catch (e) {
+              showErrorSnackBar(body: e.toString());
+              return;
+            }
+            /*
             forgotPass(
               auth: forgotPassFunction(_forgotPass),
             );
             return;
+            */
           }
         },
       );
